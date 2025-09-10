@@ -1,0 +1,48 @@
+{
+  "name": "submission_open_music_api_v2",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start:prod": "NODE_ENV=production node ./src/server.js",
+    "start:dev": "nodemon --exec node ./src/server.js",
+    "start": "nodemon --exec node node ./src/server.js",
+    "migrate:create": "node-pg-migrate create",
+    "migrate": "node-pg-migrate up",
+    "migrate:down": "node-pg-migrate down",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Halimazz/submission_open_music_api_v2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Halimazz/submission_open_music_api_v2/issues"
+  },
+  "homepage": "https://github.com/Halimazz/submission_open_music_api_v2#readme",
+  "description": "",
+  "dependencies": {
+    "@hapi/hapi": "^21.4.3",
+    "@hapi/jwt": "^3.2.1",
+    "auto-bind": "^5.0.1",
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^17.2.1",
+    "joi": "^18.0.1",
+    "nanoid": "^5.1.5",
+    "node-pg-migrate": "^8.0.3",
+    "nodemon": "^3.1.10",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "eslint": "^8.2.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0"
+  }
+}
