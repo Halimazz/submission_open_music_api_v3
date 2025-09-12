@@ -2,9 +2,10 @@ import autoBind from "auto-bind";
 import ClientError from "../../exceptions/ClientError.js";
 
 class CollaborationsHandler {
-  constructor(collaborationsService, playlistsService, validator) {
-    this._collaborationsService = collaborationsService;
+  constructor(service, playlistsService, usersService, validator) {
+    this._service = service;
     this._playlistsService = playlistsService;
+    this._usersService = usersService;
     this._validator = validator;
 
     autoBind(this);

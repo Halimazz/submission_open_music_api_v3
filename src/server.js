@@ -38,9 +38,13 @@ const init = async () => {
   const songsService = new SongsService();
   const albumsService = new AlbumsService();
   const usersService = new UsersService();
+  const playlistsService = new PlaylistsService();
+  const collaborationsService = new CollaborationsService(
+    playlistsService,
+    usersService
+  );
+
   const authenticationsService = new AuthenticationsService();
-  const collaborationsService = new CollaborationsService();
-  const playlistsService = new PlaylistsService(collaborationsService);
 
   const server = Hapi.server({
     port: PORT,
@@ -145,6 +149,7 @@ const init = async () => {
           service: collaborationsService,
           playlistsService, // dipakai untuk verify owner
           validator: CollaborationsValidator,
+          usersService,
         },
       },
       //end plugin eksternal (jangan tambahkan kode dibawah komentar ini)

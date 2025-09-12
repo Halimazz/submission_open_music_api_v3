@@ -15,15 +15,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Halimazz/submission_open_music_api_v2.git"
+    "url": "git+https://github.com/Halimazz/submission_open_music_api_v3.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Halimazz/submission_open_music_api_v2/issues"
+    "url": "https://github.com/Halimazz/submission_open_music_api_v3/issues"
   },
-  "homepage": "https://github.com/Halimazz/submission_open_music_api_v2#readme",
+  "homepage": "https://github.com/Halimazz/submission_open_music_api_v3#readme",
   "description": "",
   "dependencies": {
     "@hapi/hapi": "^21.4.3",
@@ -33,7 +33,6 @@
     "dotenv": "^17.2.1",
     "joi": "^18.0.1",
     "nanoid": "^5.1.5",
-    "node-pg-migrate": "^8.0.3",
     "nodemon": "^3.1.10",
     "pg": "^8.16.3"
   },
@@ -43,6 +42,7 @@
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.28.0",
-    "eslint-plugin-react-hooks": "^4.3.0"
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "node-pg-migrate": "^8.0.3"
   }
 }
