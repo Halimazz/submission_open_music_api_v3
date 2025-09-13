@@ -5,19 +5,23 @@ import NotFoundError from "../../exceptions/NotFoundError.js";
 import AuthorizationError from "../../exceptions/AuthorizationError.js";
 
 class CollaborationsService {
-  constructor(playlistsService, usersService) {
+  constructor(usersService) {
     this._pool = new Pool();
-    this._playlistsService = playlistsService;
     this._usersService = usersService;
   }
 
   async addCollaboration(playlistId, userId) {
+    // Gunakan usersService untuk verifikasi user
     await this._usersService.verifyUserExists(userId);
 
     const id = `collab-${nanoid(16)}`;
 
     const query = {
-      text: "INSERT INTO playlist_collaborations (id, playlist_id, user_id, created_at) VALUES ($1, $2, $3, NOW()) RETURNING id",
+      text: `
+        INSERT INTO playlist_collaborations (id, playlist_id, user_id, created_at) 
+        VALUES ($1, $2, $3, NOW()) 
+        RETURNING id
+      `,
       values: [id, playlistId, userId],
     };
 
@@ -37,7 +41,11 @@ class CollaborationsService {
 
   async deleteCollaboration(playlistId, userId) {
     const query = {
-      text: "DELETE FROM playlist_collaborations WHERE playlist_id = $1 AND user_id = $2 RETURNING id",
+      text: `
+        DELETE FROM playlist_collaborations 
+        WHERE playlist_id = $1 AND user_id = $2 
+        RETURNING id
+      `,
       values: [playlistId, userId],
     };
 
@@ -49,7 +57,10 @@ class CollaborationsService {
 
   async verifyCollaborator(playlistId, userId) {
     const query = {
-      text: "SELECT * FROM playlist_collaborations WHERE playlist_id = $1 AND user_id = $2",
+      text: `
+        SELECT * FROM playlist_collaborations 
+        WHERE playlist_id = $1 AND user_id = $2
+      `,
       values: [playlistId, userId],
     };
 

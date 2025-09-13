@@ -119,21 +119,14 @@ class PlaylistsService {
 
   async verifyPlaylistAccess(playlistId, userId) {
     try {
+      // coba cek apakah user adalah owner playlist
       await this.verifyPlaylistOwner(playlistId, userId);
     } catch (error) {
+      // kalau bukan owner, cek apakah user adalah collaborator
       if (error instanceof AuthorizationError) {
-        try {
-          await this._collaborationsService.verifyCollaborator(
-            playlistId,
-            userId
-          );
-        } catch (collabError) {
-          throw new AuthorizationError(
-            "Anda tidak berhak mengakses playlist ini sebagai owner maupun collaborator"
-          );
-        }
+        await this._collaborationsService.verifyCollaborator(playlistId, userId);
       } else {
-        throw error; // kalau error lain misalnya NotFoundError, biarin lewat
+        throw error; // kalau playlist tidak ditemukan dsb, lempar error asli
       }
     }
   }

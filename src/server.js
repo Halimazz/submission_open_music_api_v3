@@ -31,6 +31,10 @@ import PlaylistSongsValidator from "./validator/playlist-song/index.js";
 import collaborations from "./api/collaborations/index.js";
 import CollaborationsService from "./services/postgres/CollaborationsService.js";
 import CollaborationsValidator from "./validator/collaborations/index.js";
+//exports
+import _exports from "./api/exports/index.js";
+import ProducerService from "./services/rabbitmq/ProducerService.js";
+import ExportValidator from "./validator/exports/index.js";
 
 const { PORT, HOST } = process.env;
 
@@ -38,14 +42,9 @@ const init = async () => {
   const songsService = new SongsService();
   const albumsService = new AlbumsService();
   const usersService = new UsersService();
-  const playlistsService = new PlaylistsService();
-  const collaborationsService = new CollaborationsService(
-    playlistsService,
-    usersService
-  );
-
+  const collaborationsService = new CollaborationsService(usersService);
+  const playlistsService = new PlaylistsService(collaborationsService);
   const authenticationsService = new AuthenticationsService();
-
   const server = Hapi.server({
     port: PORT,
     host: HOST,
@@ -149,9 +148,16 @@ const init = async () => {
           service: collaborationsService,
           playlistsService, // dipakai untuk verify owner
           validator: CollaborationsValidator,
-          usersService,
         },
       },
+      {
+        plugin: _exports,
+        options: {
+          service: ProducerService,
+          validator: ExportValidator,
+        },
+      },
+
       //end plugin eksternal (jangan tambahkan kode dibawah komentar ini)
     ]);
 
