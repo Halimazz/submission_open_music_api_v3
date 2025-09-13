@@ -1,6 +1,12 @@
 import "dotenv/config";
 import Hapi from "@hapi/hapi";
+import Inert from "@hapi/inert";
 import Jwt from "@hapi/jwt";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // songs
 import songs from "./api/songs/index.js";
@@ -36,6 +42,11 @@ import _exports from "./api/exports/index.js";
 import ProducerService from "./services/rabbitmq/ProducerService.js";
 import ExportValidator from "./validator/exports/index.js";
 
+//uploads
+import uploads from "./api/uploads/index.js";
+import StorageService from "./services/storage/StorageService.js";
+import UploadsValidator from "./validator/uploads/index.js";
+
 const { PORT, HOST } = process.env;
 
 const init = async () => {
@@ -45,6 +56,9 @@ const init = async () => {
   const collaborationsService = new CollaborationsService(usersService);
   const playlistsService = new PlaylistsService(collaborationsService);
   const authenticationsService = new AuthenticationsService();
+  const storageService = new StorageService(
+    path.resolve(__dirname, 'api/uploads/file/images')
+  );
   const server = Hapi.server({
     port: PORT,
     host: HOST,
@@ -54,7 +68,14 @@ const init = async () => {
       },
     },
   });
-  await server.register(Jwt);
+  await server.register([
+    {
+      plugin: Jwt,
+    },
+    {
+      plugin: Inert,
+    },
+  ]);
   // define strategy
   server.auth.strategy("openmusic_jwt", "jwt", {
     keys: process.env.ACCESS_TOKEN_KEY,
@@ -114,7 +135,7 @@ const init = async () => {
       {
         plugin: albums,
         options: {
-          service: albumsService,
+          service: { albumsService },
           validator: AlbumsValidator,
         },
       },
@@ -155,6 +176,13 @@ const init = async () => {
         options: {
           service: ProducerService,
           validator: ExportValidator,
+        },
+      },
+      {
+        plugin: uploads,
+        options: {
+          service: storageService,
+          validator: UploadsValidator,
         },
       },
 
