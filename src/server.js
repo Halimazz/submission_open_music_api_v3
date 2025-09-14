@@ -6,7 +6,6 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // songs
 import songs from "./api/songs/index.js";
@@ -57,7 +56,7 @@ const init = async () => {
   const playlistsService = new PlaylistsService(collaborationsService);
   const authenticationsService = new AuthenticationsService();
   const storageService = new StorageService(
-    path.resolve(__dirname, 'api/uploads/file/images')
+    path.resolve(process.cwd(), "src/api/uploads/file/images")
   );
   const server = Hapi.server({
     port: PORT,
@@ -135,7 +134,7 @@ const init = async () => {
       {
         plugin: albums,
         options: {
-          service: { albumsService },
+          service: albumsService,
           validator: AlbumsValidator,
         },
       },

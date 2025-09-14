@@ -1,3 +1,4 @@
+import path from "path";
 const routes = (handler) => [
   {
     method: "POST",
@@ -16,7 +17,7 @@ const routes = (handler) => [
     path: "/upload/{param*}",
     handler: {
       directory: {
-        path: path.resolve(__dirname, "file"),
+        path: path.resolve(process.cwd(), "file"),
       },
     },
   },
