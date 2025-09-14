@@ -77,6 +77,36 @@ class AlbumsService {
       throw new NotFoundError("Failed to delete. Album not found");
     }
   }
+  async editAlbumCoverById(id, coverUrl) {
+    const updatedAt = new Date().toISOString();
+
+    const query = {
+      text: "UPDATE albums SET cover_url = $1, updated_at = $2 WHERE id = $3 RETURNING id",
+      values: [coverUrl, updatedAt, id],
+    };
+
+    const result = await this._pool.query(query);
+    if (!result.rows.length) {
+      throw new NotFoundError(
+        "Gagal memperbarui cover album. Id tidak ditemukan"
+      );
+    }
+  }
+  async editAlbumCoverById(id, coverUrl) {
+    const updatedAt = new Date().toISOString();
+
+    const query = {
+      text: "UPDATE albums SET cover_url = $1, updated_at = $2 WHERE id = $3 RETURNING id",
+      values: [coverUrl, updatedAt, id],
+    };
+
+    const result = await this._pool.query(query);
+    if (!result.rows.length) {
+      throw new NotFoundError(
+        "Gagal memperbarui cover album. Id tidak ditemukan"
+      );
+    }
+  }
 }
 
 export default AlbumsService;
