@@ -6,7 +6,7 @@
   "scripts": {
     "start:prod": "NODE_ENV=production node ./src/server.js",
     "start:dev": "nodemon --exec node ./src/server.js",
-    "start": "nodemon --exec node node ./src/server.js",
+    "start": "nodemon --exec node ./src/server.js",
     "migrate:create": "node-pg-migrate create",
     "migrate": "node-pg-migrate up",
     "migrate:down": "node-pg-migrate down",
