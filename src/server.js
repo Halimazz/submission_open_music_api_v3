@@ -3,9 +3,6 @@ import Hapi from "@hapi/hapi";
 import Inert from "@hapi/inert";
 import Jwt from "@hapi/jwt";
 import path from "path";
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
 
 // songs
 import songs from "./api/songs/index.js";
