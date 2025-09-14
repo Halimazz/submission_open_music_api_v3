@@ -36,11 +36,14 @@ import _exports from "./api/exports/index.js";
 import ProducerService from "./services/rabbitmq/ProducerService.js";
 import ExportValidator from "./validator/exports/index.js";
 
+//cache
+import CacheService from "./services/redis/CacheService.js";
 const { PORT, HOST } = process.env;
 
 const init = async () => {
+  const cacheService = new CacheService();
+  const albumsService = new AlbumsService(cacheService);
   const songsService = new SongsService();
-  const albumsService = new AlbumsService();
   const usersService = new UsersService();
   const collaborationsService = new CollaborationsService(usersService);
   const playlistsService = new PlaylistsService(collaborationsService);
