@@ -2,7 +2,7 @@ import path from "path";
 const routes = (handler) => [
   {
     method: "POST",
-    path: "/albums/{id}/cover",
+    path: "/albums/{id}/covers",
     handler: handler.postUploadImageHandler,
     options: {
       payload: {
