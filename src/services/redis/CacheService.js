@@ -1,9 +1,9 @@
-import redis from "redis";
+import { createClient } from "redis";
 import autoBind from "auto-bind";
 
 class CacheService {
   constructor() {
-    this._client = redis.createClient({
+    this._client = createClient({
       socket: {
         host: process.env.REDIS_SERVER,
       },

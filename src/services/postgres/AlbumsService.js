@@ -5,7 +5,7 @@ import NotFoundError from "../../exceptions/NotFoundError.js";
 import { mappingDBAlbumsToModel } from "../../utils/index.js";
 
 class AlbumsService {
-  constructor() {
+  constructor(cacheService) {
     this._pool = new Pool();
     this._cacheService = cacheService;
   }
