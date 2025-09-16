@@ -1,6 +1,8 @@
 import "dotenv/config";
 import Hapi from "@hapi/hapi";
+import Inert from "@hapi/inert";
 import Jwt from "@hapi/jwt";
+import path from "path";
 
 // songs
 import songs from "./api/songs/index.js";
@@ -36,6 +38,11 @@ import _exports from "./api/exports/index.js";
 import ProducerService from "./services/rabbitmq/ProducerService.js";
 import ExportValidator from "./validator/exports/index.js";
 
+//uploads
+import uploads from "./api/uploads/index.js";
+import StorageService from "./services/storage/StorageService.js";
+import UploadsValidator from "./validator/uploads/index.js";
+
 //cache
 import CacheService from "./services/redis/CacheService.js";
 const { PORT, HOST } = process.env;
@@ -48,6 +55,9 @@ const init = async () => {
   const collaborationsService = new CollaborationsService(usersService);
   const playlistsService = new PlaylistsService(collaborationsService);
   const authenticationsService = new AuthenticationsService();
+  const storageService = new StorageService(
+    path.resolve(process.cwd(), "src/api/uploads/file/images")
+  );
   const server = Hapi.server({
     port: PORT,
     host: HOST,
@@ -57,7 +67,14 @@ const init = async () => {
       },
     },
   });
-  await server.register(Jwt);
+  await server.register([
+    {
+      plugin: Jwt,
+    },
+    {
+      plugin: Inert,
+    },
+  ]);
   // define strategy
   server.auth.strategy("openmusic_jwt", "jwt", {
     keys: process.env.ACCESS_TOKEN_KEY,
@@ -159,6 +176,13 @@ const init = async () => {
           service: ProducerService,
           validator: ExportValidator,
           playlistsService: playlistsService,
+        },
+      },
+      {
+        plugin: uploads,
+        options: {
+          service: storageService,
+          validator: UploadsValidator,
         },
       },
 
